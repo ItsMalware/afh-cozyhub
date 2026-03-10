@@ -33,9 +33,48 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# google workspace cli local auth state
+.gws/
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime audit logs
+data/*.jsonl
+data/sms-reminder-state.json
+data/brand-operator.json
+data/news-signals-cache.json
+data/sub-agent-runs.json
+data/branding-day-store.json
+data/branding-weekly-summary-state.json
+
+# local runtime/output artifacts
+.firebase/
+.firebaserc
+.gws/
+.reme/
+.venv*/
+logs/
+dev.log
+out.txt
+firebase-debug.log
+ts_errors.log
+
+# local helper scripts not part of release artifact
+check_*.js
+create-ticket.ts
+create_webhook_ticket.js
+fetch_notion*.js
+find_notion_dbs.js
+inspect_notion_schema.js
+read_notion*.js
+start_ticket.js
+sync_*.js
+update-tasks.ts
+update_webhook_ticket.js
+test-*.ts
+test_*.js

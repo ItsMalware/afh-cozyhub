@@ -1,0 +1,30 @@
+name: Security Baseline Scan
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  sast_and_audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: NPM Supply Chain Audit
+        run: npm audit --audit-level=high
+
+      - name: ESLint Static Analysis (SAST)
+        run: npm run lint

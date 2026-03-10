@@ -1,0 +1,42 @@
+{
+    "syncedAt": "2026-03-09T12:00:00.000Z",
+    "notebookBusinessName": "Demo Corporation",
+    "dateLabel": "Monday, March 09",
+    "totalBusinesses": 1,
+    "totalPlannedMinutes": 240,
+    "totalFocusedMinutes": 120,
+    "businesses": [
+        {
+            "id": "demo-biz-1",
+            "name": "Demo Corporation",
+            "color": "indigo",
+            "plannedMinutes": 240,
+            "focusedMinutes": 120,
+            "behindMinutes": -120
+        }
+    ],
+    "queue": [
+        {
+            "id": "demo-task-1",
+            "title": "Welcome to AI Focus Hub (Demo)",
+            "businessId": "demo-biz-1",
+            "businessName": "Demo Corporation",
+            "category": "Onboarding",
+            "dueDate": "2026-03-09",
+            "plannedMinutes": 30,
+            "status": "NEXT"
+        },
+        {
+            "id": "demo-task-2",
+            "title": "Explore the Open Source Dashboard",
+            "businessId": "demo-biz-1",
+            "businessName": "Demo Corporation",
+            "category": "Exploration",
+            "dueDate": "2026-03-10",
+            "plannedMinutes": 60,
+            "status": "QUEUED"
+        }
+    ],
+    "behindTargets": [],
+    "activeSession": null
+}

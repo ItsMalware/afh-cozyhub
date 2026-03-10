@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Focus Hub 🧘
 
-## Getting Started
+Welcome to AI Focus Hub! The dashboard designed to help you organize chaos into structured, productive deep work. 
 
-First, run the development server:
+## What is AI Focus Hub OSS?
+AI Focus Hub Open Source (this repository) contains the core NextJS application and "CozyIcon" design system. It is meant to serve as the foundation for any developer wanting to build an extensible, low-clutter focus application.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Quickstart (Demo Mode)
+To let you explore the application immediately without needing to configure complex database connections, the Open Source repository defaults to **Demo Mode**. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Demo Mode replaces all live Notion/Gemini API calls with local static JSON seeds located in `/public/data`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Boot the dashboard**
+   ```bash
+   npm run dev
+   ```
+   *Note: Because `NEXT_PUBLIC_DEMO_MODE=true` is set as the default in the internal routing, the project will boot instantly.*
 
-## Learn More
+## 🔒 Open Source vs Private Enterprise Edition
+This repository runs the public **OSS** tier. The maintainers simultaneously operate a **Private Edition** which includes proprietary hooks not found here.
 
-To learn more about Next.js, take a look at the following resources:
+| Feature                           | OSS Edition | Private Edition |
+| --------------------------------- | ----------- | --------------- |
+| Cozy Dashboard (Widgets & Clock)  | ✅          | ✅              |
+| Live Notion Task Bi-Syncing       | ❌          | ✅              |
+| NotebookLM Agent Integrations     | ❌          | ✅              |
+| Substack News Analysis Hooks      | ❌          | ✅              |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ Environment Configuration 
+If you wish to fork this project and wire up your own external databases, review the `.env.example` file. This file outlines every variable required to connect Notion and Gemini API keys. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Never commit your `.env` or `.env.local` files!**
+The CI pipelines (`.github/workflows/secret-scan.yml`) strictly enforce TruffleHog scanning. If you attempt to merge secrets, your pull request will be rejected. 
 
-## Deploy on Vercel
+## 🧩 Google Workspace CLI (AFH Private Workflow)
+This repo includes local scripts for `@googleworkspace/cli`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `npm run gws:status`
+- `npm run gws:login`
+- `npm run gws:setup`
+- `npm run gws:smoke`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Recommended setup for this project:
+1. Keep auth state in repo-local `.gws`:
+   - `export GOOGLE_WORKSPACE_CLI_CONFIG_DIR="$PWD/.gws"`
+2. Place Desktop OAuth file at:
+   - `./.gws/client_secret.json`
+3. Authenticate:
+   - `npm run gws:login`
+4. Verify end-to-end:
+   - `npm run gws:smoke`
+
+This avoids threads writing credentials to the wrong folder and keeps the workflow consistent across agents.
+
+If you hit `Failed to decrypt credentials`, re-run login in the same shell. If it still persists, run GWS auth commands with Node 22 LTS for stability.
+
+## 🛡️ Security
+We take supply chain and application security seriously. 
+- Please see `.github/PULL_REQUEST_TEMPLATE.md` for mandated merge checks.
+- Please see [SECURITY.md](SECURITY.md) for vulnerability reporting guidelines.
+
+## 🤝 Roadmap & Contributing
+If you wish to contribute to the open-source layer, review the [CONTRIBUTING.md](CONTRIBUTING.md) guide! We actively welcome improvements to the UI layout, the CozyIcon motion engine, and accessibility audits.

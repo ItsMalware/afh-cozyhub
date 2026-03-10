@@ -1,0 +1,14 @@
+{
+    "hosting": {
+        "source": ".",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "site": "onyx-agent-cozyhub",
+        "frameworksBackend": {
+            "memory": "1024MiB"
+        }
+    }
+}
