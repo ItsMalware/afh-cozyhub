@@ -1,9 +1,9 @@
-# AI Focus Hub 🧘
+# CozyHub 🧘
 
-Welcome to AI Focus Hub! The dashboard designed to help you organize chaos into structured, productive deep work. 
+Welcome to CozyHub! The dashboard designed to help you organize chaos into structured, productive deep work. 
 
-## What is AI Focus Hub OSS?
-AI Focus Hub Open Source (this repository) contains the core NextJS application and "CozyIcon" design system. It is meant to serve as the foundation for any developer wanting to build an extensible, low-clutter focus application.
+## What is CozyHub OSS?
+CozyHub Open Source (this repository) contains the core NextJS application and "CozyIcon" design system. It is meant to serve as the foundation for any developer wanting to build an extensible, low-clutter focus application.
 
 ## 🚀 Quickstart (Demo Mode)
 To let you explore the application immediately without needing to configure complex database connections, the Open Source repository defaults to **Demo Mode**. 
@@ -37,7 +37,7 @@ If you wish to fork this project and wire up your own external databases, review
 **Never commit your `.env` or `.env.local` files!**
 The CI pipelines (`.github/workflows/secret-scan.yml`) strictly enforce TruffleHog scanning. If you attempt to merge secrets, your pull request will be rejected. 
 
-## 🧩 Google Workspace CLI (AFH Private Workflow)
+## 🧩 Google Workspace CLI (CozyHub Private Workflow)
 This repo includes local scripts for `@googleworkspace/cli`:
 
 - `npm run gws:status`
