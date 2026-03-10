@@ -45,12 +45,19 @@ next-env.d.ts
 
 # runtime audit logs
 data/*.jsonl
+data/**/*.jsonl
+data/**/*.ndjson
+data/**/*.db
+data/**/*.sqlite
+data/**/*.sqlite3
+data/**/*.csv
 data/sms-reminder-state.json
 data/brand-operator.json
 data/news-signals-cache.json
 data/sub-agent-runs.json
 data/branding-day-store.json
 data/branding-weekly-summary-state.json
+data/sms-outbox.jsonl
 
 # local runtime/output artifacts
 .firebase/
@@ -58,11 +65,19 @@ data/branding-weekly-summary-state.json
 .gws/
 .reme/
 .venv*/
+.direnv/
+.envrc
 logs/
 dev.log
 out.txt
 firebase-debug.log
 ts_errors.log
+*.key
+*.p12
+*.jks
+*.keystore
+security-audit/reports/
+security-audit/trufflehog-exclude.txt
 
 # local helper scripts not part of release artifact
 check_*.js
