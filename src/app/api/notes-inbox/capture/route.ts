@@ -1,18 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { requireInternalToken } from "@/lib/api-auth";
 import { captureNote } from "@/lib/agent-notes";
 
-let lastSeenToken = "Waiting for token...";
-
-export async function GET() {
-  return new NextResponse(`Last seen Notion verification token:\n\n${lastSeenToken}`, {
-    status: 200,
-    headers: { 'Content-Type': 'text/plain' }
+export async function GET(request: NextRequest) {
+  const auth = requireInternalToken(request, {
+    tokenEnvNames: ["NOTION_WEBHOOK_SECRET", "AFH_INTERNAL_API_TOKEN", "CRON_SECRET"],
   });
+  if (!auth.ok) {
+    return NextResponse.json({ message: auth.message }, { status: auth.status });
+  }
+
+  return NextResponse.json({ status: "ok" }, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireInternalToken(request, {
+      tokenEnvNames: ["NOTION_WEBHOOK_SECRET", "AFH_INTERNAL_API_TOKEN", "CRON_SECRET"],
+    });
+    if (!auth.ok) {
+      return NextResponse.json({ message: auth.message }, { status: auth.status });
+    }
+
     let body: {
       note?: string;
       businessId?: string;
@@ -30,24 +40,21 @@ export async function POST(request: NextRequest) {
     // Attempt to safely parse the body
     try {
       body = await request.json();
-      console.log(`\n=== INCOMING WEBHOOK BODY ===\n${JSON.stringify(body, null, 2)}\n=============================\n`);
-    } catch (e) {
-      console.log(`Could not parse JSON body: ${e}`);
+    } catch {
+      console.warn("Notes inbox webhook body parse failed");
     }
 
     // Is it a challenge?
     if (body?.challenge) {
-      lastSeenToken = body.challenge;
       return new NextResponse(body.challenge, { status: 200, headers: { 'Content-Type': 'text/plain' } });
     }
 
     // Is it a verification token?
     if (body?.verification_token) {
-      lastSeenToken = body.verification_token;
-      return NextResponse.json({
-        challenge: body.verification_token,
-        verification_token: body.verification_token
-      }, { status: 200 });
+      return new NextResponse(body.verification_token, {
+        status: 200,
+        headers: { "Content-Type": "text/plain" },
+      });
     }
 
     // If it's empty or seems like a webhook setup, just accept it
@@ -67,11 +74,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown note capture error";
+    console.error("Notes inbox capture failed", error);
     return NextResponse.json(
       {
         message: "Unable to capture note",
-        error: message,
       },
       { status: 500 },
     );

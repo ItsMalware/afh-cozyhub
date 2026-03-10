@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import { requireInternalToken } from "@/lib/api-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const auth = requireInternalToken(request);
+  if (!auth.ok) {
+    return NextResponse.json({ message: auth.message }, { status: auth.status });
+  }
+
   const geminiConfigured = Boolean(process.env.GEMINI_API_KEY);
   const openaiConfigured = Boolean(process.env.OPENAI_API_KEY);
   const notionConfigured = Boolean(

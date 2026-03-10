@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 
 import { Client } from "@notionhq/client";
+import { requireInternalToken } from "@/lib/api-auth";
 
 type PropertySummary = {
   name: string;
@@ -52,6 +53,11 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   try {
+    const auth = requireInternalToken(req);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.message }, { status: auth.status });
+    }
+
     const token = process.env.NOTION_TOKEN;
     if (!token) {
       return NextResponse.json({ error: "NOTION_TOKEN is not configured" }, { status: 500 });

@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 
+import { requireInternalToken } from "@/lib/api-auth";
 import { getRouterRuns } from "@/lib/agent-notes";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const auth = requireInternalToken(request);
+    if (!auth.ok) {
+      return NextResponse.json({ message: auth.message }, { status: auth.status });
+    }
+
     const runs = await getRouterRuns();
     return NextResponse.json(
       {
@@ -13,11 +19,10 @@ export async function GET() {
       { status: 200 },
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown runs error";
+    console.error("Unable to load router runs", error);
     return NextResponse.json(
       {
         message: "Unable to load router runs",
-        error: message,
       },
       { status: 500 },
     );
