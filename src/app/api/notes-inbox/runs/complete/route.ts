@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { requireInternalToken } from "@/lib/api-auth";
 import { completeRoutedRun } from "@/lib/agent-notes";
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireInternalToken(request);
+    if (!auth.ok) {
+      return NextResponse.json({ message: auth.message }, { status: auth.status });
+    }
+
     const body = (await request.json()) as {
       runId?: string;
       hoursCmmdHub?: number;
@@ -34,11 +40,10 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown run completion error";
+    console.error("Unable to complete delegated run", error);
     return NextResponse.json(
       {
         message: "Unable to complete delegated run",
-        error: message,
       },
       { status: 500 },
     );

@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: NPM Supply Chain Audit
-        run: npm audit --omit=dev --audit-level=critical
+        run: npm audit --omit=dev --audit-level=high
 
       - name: ESLint Static Analysis (SAST)
         run: npm run lint
