@@ -71,6 +71,7 @@ function extractGeminiText(payload: GeminiPayload): string {
 }
 
 import { Client } from "@notionhq/client";
+import { requireInternalToken } from "@/lib/api-auth";
 
 function findPropertyKey(
   properties: Record<string, any>,
@@ -426,8 +427,12 @@ async function getOpenAIReply(message: string, memoryContext: string): Promise<s
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const auth = requireInternalToken(req);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.message }, { status: auth.status });
+    }
     const messages = await loadRecentChatHistoryFromFirestore(300);
     return NextResponse.json({ messages }, { status: 200 });
   } catch (error) {
@@ -438,6 +443,10 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const auth = requireInternalToken(req);
+    if (!auth.ok) {
+      return NextResponse.json({ error: auth.message }, { status: auth.status });
+    }
     const payload = (await req.json()) as { message?: unknown };
     const message = typeof payload.message === "string" ? payload.message.trim() : "";
 
