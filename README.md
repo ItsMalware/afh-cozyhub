@@ -11,6 +11,15 @@ CozyHub Open Source (this repository) contains the core NextJS application and "
 - Branding Day Mode with AI insight cards, funnel snapshots, channel mix, and moments tracking.
 - Weekly AI summary pipeline ready for Monday-night automation.
 
+## 🧠 Neurodivergent-First Design
+CozyHub was created to support real-world executive function needs, including ADHD, OCD, autism, and broader neurodivergent workflows.
+
+Design intent includes:
+- low-clutter daily focus views to reduce overwhelm,
+- predictable structure and repeatable routines,
+- gentle reminders and pacing cues to prevent burnout,
+- clear task framing that lowers context-switching friction.
+
 ## 🚀 Quickstart (Demo Mode)
 To let you explore the application immediately without needing to configure complex database connections, the Open Source repository defaults to **Demo Mode**. 
 
