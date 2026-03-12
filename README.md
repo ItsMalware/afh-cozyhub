@@ -53,6 +53,13 @@ This repository runs the public **OSS** tier. The maintainers simultaneously ope
 ## ⚙️ Environment Configuration 
 If you wish to fork this project and wire up your own external databases, review the `.env.example` file. This file outlines every variable required to connect Notion and Gemini API keys. 
 
+### Key Guides for Setup
+For detailed setup instructions on configuring the above modes, please see the following guides:
+- [Notion Database Schema Setup](docs/setup/notion.md)
+- [Agent Webhooks & Router Setup](docs/setup/webhooks.md)
+- [Firebase & NotebookLM Integrations](docs/setup/integrations.md)
+- [Web Deployment Guide](docs/setup/deployment.md)
+
 **Never commit your `.env` or `.env.local` files!**
 The CI pipelines (`.github/workflows/secret-scan.yml`) strictly enforce TruffleHog scanning. If you attempt to merge secrets, your pull request will be rejected. 
 
@@ -107,3 +114,6 @@ We take supply chain and application security seriously.
 
 ## 🤝 Roadmap & Contributing
 If you wish to contribute to the open-source layer, review the [CONTRIBUTING.md](CONTRIBUTING.md) guide! We actively welcome improvements to the UI layout, the CozyIcon motion engine, and accessibility audits.
+
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
