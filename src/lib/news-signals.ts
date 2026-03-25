@@ -538,7 +538,7 @@ async function fetchSource(source: ConfigurableSource): Promise<NewsSignalItem[]
           };
         });
       }
-    } catch (e) {
+    } catch {
       throw new Error(`JSON parse failed for ${source.source}`);
     }
   } else {

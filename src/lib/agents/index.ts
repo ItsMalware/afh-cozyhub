@@ -5,17 +5,7 @@ import { writeAuditLog } from "@/lib/audit-log";
 import { createNotebookBriefService } from "@/lib/notebooklm-client";
 import { createNotionDataService } from "@/lib/notion-client";
 import { sendSessionStartReminder } from "@/lib/sms-reminders";
-import { CompleteSessionInput } from "@/lib/types";
-
-const notionService = createNotionDataService({
-  token: process.env.NOTION_TOKEN,
-  businessesDbId: process.env.NOTION_DATABASE_BUSINESSES_ID,
-  tasksDbId: process.env.NOTION_DATABASE_TASKS_ID,
-  projectsDbId: process.env.NOTION_DATABASE_PROJECTS_ID,
-  sessionsDbId: process.env.NOTION_DATABASE_SESSIONS_ID,
-});
-
-const notebookService = createNotebookBriefService();
+import { CompleteSessionInput, NotionDataService } from "@/lib/types";
 
 import { TriageAgent } from "@/lib/agents/triage";
 
@@ -23,19 +13,78 @@ import { AccountabilityAgent } from "@/lib/agents/accountability";
 
 import { InboxLoadBalancerAgent } from "@/lib/agents/load-balancer";
 
-const librarian = new LibrarianAgent(notionService, notebookService);
-const worker = new WorkerAgent(notionService);
-const prime = new PrimeAgent(librarian, worker);
-export const triageAgent = new TriageAgent();
-export const accountabilityAgent = new AccountabilityAgent();
-export const inboxLoadBalancerAgent = new InboxLoadBalancerAgent();
+const notebookService = createNotebookBriefService();
+let notionService: NotionDataService | null = null;
+let prime: PrimeAgent | null = null;
+let triage: TriageAgent | null = null;
+let accountability: AccountabilityAgent | null = null;
+let inboxLoadBalancer: InboxLoadBalancerAgent | null = null;
+
+function getNotionService(): NotionDataService {
+  if (!notionService) {
+    notionService = createNotionDataService({
+      token: process.env.NOTION_TOKEN,
+      businessesDbId: process.env.NOTION_DATABASE_BUSINESSES_ID,
+      tasksDbId: process.env.NOTION_DATABASE_TASKS_ID,
+      projectsDbId: process.env.NOTION_DATABASE_PROJECTS_ID,
+      sessionsDbId: process.env.NOTION_DATABASE_SESSIONS_ID,
+    });
+  }
+
+  return notionService;
+}
+
+function getPrimeAgent(): PrimeAgent {
+  if (!prime) {
+    const service = getNotionService();
+    const librarian = new LibrarianAgent(service, notebookService);
+    const worker = new WorkerAgent(service);
+    prime = new PrimeAgent(librarian, worker);
+  }
+
+  return prime;
+}
+
+function getTriageAgent(): TriageAgent {
+  if (!triage) {
+    triage = new TriageAgent();
+  }
+  return triage;
+}
+
+function getAccountabilityAgent(): AccountabilityAgent {
+  if (!accountability) {
+    accountability = new AccountabilityAgent();
+  }
+  return accountability;
+}
+
+function getInboxLoadBalancerAgent(): InboxLoadBalancerAgent {
+  if (!inboxLoadBalancer) {
+    inboxLoadBalancer = new InboxLoadBalancerAgent();
+  }
+  return inboxLoadBalancer;
+}
+
+export const triageAgent = {
+  triageInbox: () => getTriageAgent().triageInbox(),
+};
+
+export const accountabilityAgent = {
+  runAccountabilityCheck: () => getAccountabilityAgent().runAccountabilityCheck(),
+};
+
+export const inboxLoadBalancerAgent = {
+  processInbox: (emails: Parameters<InboxLoadBalancerAgent["processInbox"]>[0]) =>
+    getInboxLoadBalancerAgent().processInbox(emails),
+};
 
 export async function getDashboard() {
-  return prime.buildDashboard();
+  return getPrimeAgent().buildDashboard();
 }
 
 export async function startSession(taskId: string) {
-  const session = await prime.startSession(taskId);
+  const session = await getPrimeAgent().startSession(taskId);
 
   await writeAuditLog({
     timestamp: new Date().toISOString(),
@@ -69,7 +118,7 @@ export async function startSession(taskId: string) {
 }
 
 export async function completeSession(input: CompleteSessionInput) {
-  const completed = await prime.completeSession(input);
+  const completed = await getPrimeAgent().completeSession(input);
 
   await writeAuditLog({
     timestamp: new Date().toISOString(),
@@ -88,7 +137,7 @@ export async function completeSession(input: CompleteSessionInput) {
 }
 
 export async function completeTask(taskId: string) {
-  await prime.completeTask(taskId);
+  await getPrimeAgent().completeTask(taskId);
 
   await writeAuditLog({
     timestamp: new Date().toISOString(),
@@ -102,5 +151,5 @@ export async function completeTask(taskId: string) {
 }
 
 export async function getNotebookBrief(businessId: string, businessName: string) {
-  return prime.getBrief(businessId, businessName);
+  return getPrimeAgent().getBrief(businessId, businessName);
 }

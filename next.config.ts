@@ -4,9 +4,6 @@ const exportMode = process.env.NEXT_OUTPUT_MODE === "export";
 
 const nextConfig: NextConfig = {
   ...(exportMode ? { output: "export" } : {}),
-  env: {
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-  },
   // Prevent Turbopack from bundling these native/complex packages —
   // they must be required as-is from node_modules at runtime.
   serverExternalPackages: [
