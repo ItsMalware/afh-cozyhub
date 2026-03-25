@@ -94,3 +94,7 @@ update-tasks.ts
 update_webhook_ticket.js
 test-*.ts
 test_*.js
+
+# playwright artifacts
+test-results/
+playwright-report/
