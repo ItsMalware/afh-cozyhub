@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # google workspace cli local auth state
 .gws/
@@ -93,3 +94,7 @@ update-tasks.ts
 update_webhook_ticket.js
 test-*.ts
 test_*.js
+
+# playwright artifacts
+test-results/
+playwright-report/

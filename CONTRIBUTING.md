@@ -1,14 +1,14 @@
-# Contributing to AI Focus Hub
+# Contributing to CozyHub
 
 First off, thanks for taking the time to contribute! :bouquet:
 
-The following is a set of guidelines for contributing to AI Focus Hub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to CozyHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 ## Code of Conduct
 This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code.
 
 ## Private Edition Limits
-AI Focus Hub consists of an Open Source Core (`main`) and a Private Enterprise Edition.
+CozyHub consists of an Open Source Core (`main`) and a Private Enterprise Edition.
 
 If you are contributing to the Open Source project, please note that any feature submissions strictly requiring **Notion API keys**, paid **Gemini/NotebookLM Auth structures**, or proprietary internal business logic will NOT be merged into `main`. The `main` branch must always remain bootable in Demo Mode (`NEXT_PUBLIC_DEMO_MODE=true`) for users who do not possess API credentials.
 

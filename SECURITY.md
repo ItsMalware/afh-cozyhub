@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Supported Versions
-AI Focus Hub actively supports security updates for the current major branch.
+CozyHub actively supports security updates for the current major branch.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -9,7 +9,7 @@ AI Focus Hub actively supports security updates for the current major branch.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within AI Focus Hub, please DO NOT open a public issue. 
+If you discover a security vulnerability within CozyHub, please DO NOT open a public issue. 
 Instead, send a direct report to the maintainer via email or through the private vulnerability reporting flow in GitHub.
 
 Include the following details:

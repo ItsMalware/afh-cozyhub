@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { Client } from "@notionhq/client";
-import { APIResponseError } from "@notionhq/client";
 
 import {
   CompleteSessionInput,
@@ -645,16 +644,6 @@ function safeOption(
   }
 
   return undefined;
-}
-
-function notionErrorMessage(error: unknown): string {
-  if (error instanceof APIResponseError) {
-    return `${error.code}: ${error.message}`;
-  }
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return "Unknown Notion error";
 }
 
 function getFirstRelationIdFromPage(

@@ -1,4 +1,4 @@
-# CozyHub 🧘
+# CozyHub
 
 Welcome to CozyHub! The dashboard designed to help you organize chaos into structured, productive deep work. 
 
@@ -35,6 +35,29 @@ Demo Mode replaces all live Notion/Gemini API calls with local static JSON seeds
    npm run dev
    ```
    *Note: Because `NEXT_PUBLIC_DEMO_MODE=true` is set as the default in the internal routing, the project will boot instantly.*
+
+### Supported runtime
+- Node.js `22.x` is the supported runtime for local development and CI.
+- Use `.nvmrc` with `nvm use` before running install, lint, or build steps.
+
+### Release verification
+Run the full pre-release verification locally before opening or merging a release PR:
+
+```bash
+npm run release:check
+```
+
+Install the release smoke browser once per machine:
+
+```bash
+npx playwright install chromium
+```
+
+Run the smoke suite explicitly with:
+
+```bash
+npm test
+```
 
 ## 🔒 Open Source vs Private Enterprise Edition
 This repository runs the public **OSS** tier. The maintainers simultaneously operate a **Private Edition** which includes proprietary hooks not found here.
@@ -111,6 +134,7 @@ If you hit `Failed to decrypt credentials`, re-run login in the same shell. If i
 We take supply chain and application security seriously. 
 - Please see `.github/PULL_REQUEST_TEMPLATE.md` for mandated merge checks.
 - Please see [SECURITY.md](SECURITY.md) for vulnerability reporting guidelines.
+- Please see [CHANGELOG.md](CHANGELOG.md) for the release-summary history.
 
 ## 🤝 Roadmap & Contributing
 If you wish to contribute to the open-source layer, review the [CONTRIBUTING.md](CONTRIBUTING.md) guide! We actively welcome improvements to the UI layout, the CozyIcon motion engine, and accessibility audits.
