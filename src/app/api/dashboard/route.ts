@@ -6,18 +6,35 @@ import { getDashboard } from "@/lib/agents";
 
 export const dynamic = "force-dynamic";
 
+function hasNotionConfig(): boolean {
+  return Boolean(
+    process.env.NOTION_TOKEN &&
+      process.env.NOTION_DATABASE_BUSINESSES_ID &&
+      process.env.NOTION_DATABASE_TASKS_ID &&
+      process.env.NOTION_DATABASE_PROJECTS_ID &&
+      process.env.NOTION_DATABASE_SESSIONS_ID,
+  );
+}
+
+async function loadSeedDashboard() {
+  const seedPath = path.join(process.cwd(), "public", "data", "dashboard-seed.json");
+  const seedData = await fs.readFile(seedPath, "utf-8");
+  return JSON.parse(seedData);
+}
+
 export async function GET() {
   try {
-    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
-      const seedPath = path.join(process.cwd(), "public", "data", "dashboard-seed.json");
-      const seedData = await fs.readFile(seedPath, "utf-8");
-      return NextResponse.json(JSON.parse(seedData), { status: 200 });
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true" || !hasNotionConfig()) {
+      return NextResponse.json(await loadSeedDashboard(), { status: 200 });
     }
 
     const dashboard = await getDashboard();
     return NextResponse.json(dashboard, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown dashboard error";
+    if (message.toLowerCase().includes("notion api not configured")) {
+      return NextResponse.json(await loadSeedDashboard(), { status: 200 });
+    }
     return NextResponse.json(
       {
         message: "Unable to load dashboard",
