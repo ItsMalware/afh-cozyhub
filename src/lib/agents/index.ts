@@ -151,5 +151,5 @@ export async function completeTask(taskId: string) {
 }
 
 export async function getNotebookBrief(businessId: string, businessName: string) {
-  return getPrimeAgent().getBrief(businessId, businessName);
+  return notebookService.getBrief(businessId, businessName);
 }
